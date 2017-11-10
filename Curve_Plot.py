@@ -26,7 +26,8 @@ def Curve_Plot():
 
 	plt.figure()
 	plt.plot(y,x)
-	print(x)
+	plt.show()
+	
 	
 
 Curve_Plot()
