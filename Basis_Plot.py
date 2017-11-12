@@ -25,7 +25,8 @@ def Basis_Plot():
 			spline.__init__(order=4, knots=t)								
 		matrix = spline.evaluate(x)
 		matrix=matrix.T
-		
+		#print(spline)
+		#print(matrix)
 		plt.figure()
 		for vec in matrix:
 			plt.plot(x, vec.T)
