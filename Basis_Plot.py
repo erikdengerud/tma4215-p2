@@ -8,7 +8,7 @@ import sys
 
 def Basis_Plot():
 	'''Plots basis splines for different knot vectors'''
-	x = np.linspace(0,4, 100)
+	x = np.linspace(0, 4, 100)
 	t1 = np.array([0, 0, 0, 1, 2, 3, 4, 4, 4])
 	t2 = np.array([0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 4])
 	t3 = np.array([0, 0, 0, 0, 1, 2, 3, 4, 4, 4, 4])
