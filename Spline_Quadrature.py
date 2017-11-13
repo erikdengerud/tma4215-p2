@@ -30,7 +30,11 @@ def Prepare_Data(T,p):
 	
 	return basis, I, W, X, n
 
-t1 = np.array([0, 0, 0, 1, 2,  3, 4, 4, 4])
+t1 = np.array([0, 0, 0, 1, 2, 3, 4, 4, 4])
+t2 = np.array([0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 4])
+t3 = np.array([0, 0, 0, 0, 1, 2, 3, 4, 4, 4, 4])
+t4 = np.array([0, 0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 4, 4])
+knot_vectors = np.array([t1, t2, t3, t4])
 
 def Assembly(basis,I,W,X,n):
 	'''updating Fn and ∂Fn every time in the Newton iteration.
@@ -57,17 +61,26 @@ def Assembly(basis,I,W,X,n):
 	#update ∂Fn
 	temp = dN*sp.sparse.diags(W, 0)
 	J = np.concatenate((N, temp), axis=1)#dN*diag(sparse(W))
-
+	J2 = np.array(N[:,0])
+	J2 = np.concatenate((J2, temp[:,0]), axis=1)
+	for i in range(1,int(n/2)):
+		J2 = np.concatenate((J2, N[:,i]), axis=1)
+		J2 = np.concatenate((J2, temp[:,i]), axis=1)
+	#print(J2)
+	#print(np.asarray(J2))
 	#∂Fn permuted and made sparse
 	J = sp.sparse.csr_matrix(J)
+	#print(J.todense())
 
-	return F, J
+	return F, J#, J2
 
 basis, I, W, X, n = Prepare_Data(t1, 2)
 
-F, J = Assembly(basis, I, W, X, n)
+#F, J, J2= Assembly(basis, I, W, X, n)
 #print(F)
 #print(J.todense())
+#print(np.linalg.solve(J.todense(), F))
+#print(np.linalg.solve(J2, F))
 
 
 def Spline_Quadrature(T, p):
@@ -94,8 +107,8 @@ def Spline_Quadrature(T, p):
 
 		F, J = Assembly(basis,I,W,X,n)
 		delta = sp.sparse.linalg.spsolve(J, F)
-		W -= delta[0]
-		X -= delta[1]
+		W -= delta[:int(n/2)]
+		X -= delta[int(n/2):]
 
 		norm = np.linalg.norm(delta)
 
@@ -110,7 +123,10 @@ def Spline_Quadrature(T, p):
 
 
 	if abs(norm) > tol:
-		itcount = -1 #Does not converge within 100 iterations
+		itcount = -1 #Does not converge within 20 iterations
 	return W, X, itcount
 
 Spline_Quadrature(t1, 2)
+Spline_Quadrature(t2, 2)
+Spline_Quadrature(t3, 3)
+Spline_Quadrature(t4, 3)
