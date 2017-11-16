@@ -22,10 +22,12 @@ def XML_Extraction(xmlfile):
 def Gauss_Legendre_Data(n):
     # find the n roots of L_{n}(x)
     guess = [ ( np.cos((2 * i - 1) * np.pi / (2 * n + 1)) + np.cos(2 * i * np.pi / (2 * n + 1)) ) / 2 for i in range(1, n + 1) ]
+    
+    # print(guess)
     xi = [ Olver(n, x_0)[0] for x_0 in guess ]
     # compute the weights
     weights = []
-    for x in xi:
+    for x in xi:    
         L1_x = Legendre_1(n, x, Legendre_0(n, x))[-1]
         weights.append( 2 / ((1 - x**2) * (L1_x**2)) )
     return [xi, weights]
@@ -59,7 +61,7 @@ def Legendre_0(n, x):
     # result = [ L_0(x), L_1(x), ..., L_n(x) ]
     result = [1, x]
     for i in range (2, n + 1):
-        result.append( ((2 * n - 1) * x * result[i - 1] - (n - 1) * result[i - 2] ) / n )
+        result.append( ((2 * i - 1) * x * result[i - 1] - (i - 1) * result[i - 2]) / i )
     return result
 
 def Legendre_1(n, x, L0):
@@ -68,7 +70,7 @@ def Legendre_1(n, x, L0):
     # result = [ L_0'(x), L_1'(x), ..., L_n'(x) ]
     result = [0, 1]
     for i in range (2, n + 1):
-        result.append( ( (2 * n - 1) * (L0[i - 1] + x * result[i - 1]) - (n - 1) * result[i - 2] ) / n )
+        result.append( ( (2 * i - 1) * (L0[i - 1] + x * result[i - 1]) - (i - 1) * result[i - 2] ) / i )
     return result
 
 def Legendre_2(n, x, L1):
@@ -77,39 +79,28 @@ def Legendre_2(n, x, L1):
     # result = [ L_0''(x), ..., L_n''(x) ]
     result = [0, 0]
     for i in range (2, n + 1):
-        result.append( ( (2 * n - 1) * (2 * L1[i - 1] + x * result[i - 1]) - (n - 1) * result[i - 2] ) / n )
+        result.append( ( (2 * i - 1) * (2 * L1[i - 1] + x * result[i - 1]) - (i - 1) * result[i - 2] ) / i )
     return result
     
 
-def Gauss_Legendre_Quadrature(n, G, f):
-    data = Gauss_Legendre_Data(n + 1)
-    # with the n + 1 points and weights we can integrate all polynomials of degree <= 2 * n + 1 exactly
+def Gauss_Legendre_Quadrature(n, G, f):   
     result = 0
-    for i in range(len(data[0])):
-        result += data[1][i] * f(data[0][i])
+    for i in range(n):
+        result += G[1][i] * f(G[0][i])
     return result
 
 def Return_Quadrature(xmlfile, n):
-    G = 1 # ?
     data = XML_Extraction(xmlfile)
+    # n x 2 matrix with nodes and weights
+    # with the n + 1 points and weights we can integrate all polynomials of degree <= 2 * n - 1 exactly
+    G = Gauss_Legendre_Data(n) 
     numeric = Gauss_Legendre_Quadrature(n, G, data[0])
     analytic = data[1]
     
     return [numeric, analytic]
 
+f = lambda x : 7 * x**12 + 2 * x**3 - 12 * x
 
-n = 7
-xvalues = [-1 + 2 * i / 1000 for i in range(1001)]
-yvalues = [Legendre_0(n, x)[-1] for x in xvalues]
-plt.plot(xvalues, yvalues)
-
-guess = [ ( np.cos((2 * i - 1) * np.pi / (2 * n + 1)) + np.cos(2 * i * np.pi / (2 * n + 1)) ) / 2 for i in range(1, n + 1) ]
-xi = [ Olver(n, x_0)[0] for x_0 in guess ]
-for x in xi:
-    plt.plot(x, 0, "ro")
-
-
-f = lambda x : 7 * x**8 + 2 * x**3 - 12 * x
-print(Gauss_Legendre_Quadrature(5, 1, f))
-
+G = Gauss_Legendre_Data(5)
+print( Gauss_Legendre_Quadrature(5, G, f) )
     
