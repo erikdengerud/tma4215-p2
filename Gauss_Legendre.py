@@ -6,9 +6,9 @@ from math import *
 import matplotlib.pyplot as plt
 plt.style.use("ggplot")
 ################################################################################
-ERRORTOL = 1e-15
+ERRORTOL = 1e-6
 EPS = 1e-25
-ITERATIONCAP = 1000
+ITERATIONCAP = 2000
 
 def XML_Extraction(xmlfile):
     tree = et.parse(xmlfile)
@@ -21,14 +21,13 @@ def XML_Extraction(xmlfile):
 
 def Gauss_Legendre_Data(n):
     # find the n roots of L_{n}(x)
-    guess = [ np.cos((4 * i - 1) * np.pi / (4 * n + 2)) for i in range(1, n + 1) ]
+    guess = [ ( np.cos((2 * i - 1) * np.pi / (2 * n + 1)) + np.cos(2 * i * np.pi / (2 * n + 1)) ) / 2 for i in range(1, n + 1) ]
     xi = [ Olver(n, x_0)[0] for x_0 in guess ]
     # compute the weights
     weights = []
     for x in xi:
         L1_x = Legendre_1(n, x, Legendre_0(n, x))[-1]
         weights.append( 2 / ((1 - x**2) * (L1_x**2)) )
-    # weights = [ 2 / (( 1 - x**2 ) * (Legendre_1(n, x, Legendre_0(n, x))[-1])**2) for x in xi ]
     return [xi, weights]
 
 def Olver(n, x0):
@@ -60,7 +59,7 @@ def Legendre_0(n, x):
     # result = [ L_0(x), L_1(x), ..., L_n(x) ]
     result = [1, x]
     for i in range (2, n + 1):
-        result.append( ((2 * n + 1) * x * result[i - 1] - n * result[i - 2] ) / (n + 1) )
+        result.append( ((2 * n - 1) * x * result[i - 1] - (n - 1) * result[i - 2] ) / n )
     return result
 
 def Legendre_1(n, x, L0):
@@ -69,7 +68,7 @@ def Legendre_1(n, x, L0):
     # result = [ L_0'(x), L_1'(x), ..., L_n'(x) ]
     result = [0, 1]
     for i in range (2, n + 1):
-        result.append( ( (2 * n + 1) * (L0[i - 1] + x * result[i - 1]) - n * result[i - 2] ) / (n + 1) )
+        result.append( ( (2 * n - 1) * (L0[i - 1] + x * result[i - 1]) - (n - 1) * result[i - 2] ) / n )
     return result
 
 def Legendre_2(n, x, L1):
@@ -78,10 +77,9 @@ def Legendre_2(n, x, L1):
     # result = [ L_0''(x), ..., L_n''(x) ]
     result = [0, 0]
     for i in range (2, n + 1):
-        result.append( ( (2 * n + 1) * (2 * L1[i - 1] + x * result[i - 1]) - n * result[i - 2] ) / (n + 1) )
+        result.append( ( (2 * n - 1) * (2 * L1[i - 1] + x * result[i - 1]) - (n - 1) * result[i - 2] ) / n )
     return result
     
-
 
 def Gauss_Legendre_Quadrature(n, G, f):
     data = Gauss_Legendre_Data(n + 1)
@@ -99,19 +97,19 @@ def Return_Quadrature(xmlfile, n):
     
     return [numeric, analytic]
 
-"""
-n = 10
+
+n = 7
 xvalues = [-1 + 2 * i / 1000 for i in range(1001)]
 yvalues = [Legendre_0(n, x)[-1] for x in xvalues]
 plt.plot(xvalues, yvalues)
 
-guess = [ np.cos((4 * i - 1) * np.pi / (4 * n + 2)) for i in range(1, n + 1) ]
+guess = [ ( np.cos((2 * i - 1) * np.pi / (2 * n + 1)) + np.cos(2 * i * np.pi / (2 * n + 1)) ) / 2 for i in range(1, n + 1) ]
 xi = [ Olver(n, x_0)[0] for x_0 in guess ]
 for x in xi:
     plt.plot(x, 0, "ro")
-"""
 
-f = lambda x : 2 * x**3 + 3 * x**2 
-print(Gauss_Legendre_Quadrature(2, 1, f)) # burde gi 2. Noe er feil med weights (nullpunktene er rett)
-    
+
+f = lambda x : 7 * x**8 + 2 * x**3 - 12 * x
+print(Gauss_Legendre_Quadrature(5, 1, f))
+
     
