@@ -14,7 +14,7 @@ def XML_Extraction(xmlfile):
     tree = et.parse(xmlfile)
     root = tree.getroot()
     f = lambda x : eval(root[0].text)
-    analytical = float(root[1].text)
+    analytical = float(eval(root[1].text))
     return [f, analytical]
 
 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <DATA>
-  <Function></Function>
-  <Analytical></Analytical>
+  <Function>x**2</Function>
+  <Analytical>2/3</Analytical>
 </DATA>
