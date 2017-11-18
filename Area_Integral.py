@@ -42,6 +42,6 @@ for i in np.arange(len(X_u)):
     for j in np.arange(len(X_v)):
         du = surface.derivative(X_u[i], X_v[j], d=(1,0))
         dv = surface.derivative(X_u[i], X_v[j], d=(0,1))
-        summen += np.abs(np.cross(du,dv))
+        summen += np.abs(W_u[i]*W_v[j]*np.cross(du,dv))
         
 print('Area calculated from spline quadrature and Jacoabian integral/sum : ',summen)
