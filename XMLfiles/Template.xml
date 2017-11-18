@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<DATA>
+  <Function>x**2*exp(-3*x)+x**3*exp(-2*x)</Function>
+  <Analytical>-(136+513*exp(1)+27*exp(5)-40*exp(6))/(216*exp(3))</Analytical>
+</DATA>
