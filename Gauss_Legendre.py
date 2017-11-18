@@ -102,9 +102,9 @@ def Return_Quadrature(xmlfile, n):
     
     return [numeric, analytic]
 
-f = lambda x : 7 * x**12 + 2 * x**3 - 12 * x
-n = 7
-G = Gauss_Legendre_Data(n)
-print( Gauss_Legendre_Quadrature(n, G, f) )
+#f = lambda x : 7 * x**12 + 2 * x**3 - 12 * x
+#n = 7
+#G = Gauss_Legendre_Data(n)
+#print( Gauss_Legendre_Quadrature(n, G, f) )
 
     
