@@ -15,22 +15,25 @@ def Basis_Plot():
 	t4 = np.array([0, 0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 4, 4])
 	knot_vectors = np.array([t1, t2, t3, t4])
 
-	count = 0
-	for t in knot_vectors:
-		spline = spl.BSplineBasis()
-		if count < 2:
-			spline.__init__(order=3, knots=t)
-			count+=1
-		else:
-			spline.__init__(order=4, knots=t)								
-		matrix = spline.evaluate(x)
-		matrix=matrix.T
-		#print(spline)
-		#print(matrix)
-		plt.figure()
-		for vec in matrix:
-			plt.plot(x, vec.T)
-		plt.show()
+	b1 = spl.BSplineBasis(3, knots=t1)
+	b2 = spl.BSplineBasis(3, knots=t2)
+	b3 = spl.BSplineBasis(4, knots=t3)
+	b4 = spl.BSplineBasis(4, knots=t4)
+
+
+	plt.figure()
+	f, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, sharex='col', sharey='row')
+	ax1.plot(x, b1(x))
+	ax1.set_title('$\mathbf{\\tau_1}$ ')
+	ax2.plot(x, b2(x))
+	ax2.set_title('$\mathbf{\\tau_2}$ ')
+	ax3.plot(x, b3(x))
+	ax3.set_title('$\mathbf{\\tau_3}$ ')
+	ax4.plot(x, b4(x))
+	ax4.set_title('$\mathbf{\\tau_4}$ ')
+	plt.savefig('Basis_Plot.pdf')
+	plt.show()
+
 
 Basis_Plot()
 
