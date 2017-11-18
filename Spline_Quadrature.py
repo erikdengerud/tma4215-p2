@@ -93,7 +93,7 @@ def Spline_Quadrature(T, p):
 	#Prepare_data
 	basis, I, W, X, n = Prepare_Data(T, p)
 	#print('Starting at: \n W: ', W, '\n X: ', X)
-#	print('Starting at: \n W: ', W, '\n X: ', X)
+	#print('Starting at: \n W: ', W, '\n X: ', X)
 	#Assembly
 	F, J = Assembly(basis, I, W, X, n)
 	#First iteration
@@ -102,7 +102,7 @@ def Spline_Quadrature(T, p):
 	X -= delta[int(n/2):]
 	norm = np.linalg.norm(delta)
 	itcount = 1
-#	print('Iteration ', itcount, '\t X = ',X ,'\t W = ', W, '\t Norm = %0.2E' % norm)
+	#print('Iteration ', itcount, '\t X = ',X ,'\t W = ', W, '\t Norm = %0.2E' % norm)
 
 
 	while abs(norm)>tol and itcount < 20:
@@ -115,7 +115,7 @@ def Spline_Quadrature(T, p):
 		norm = np.linalg.norm(delta)
 
 		itcount+=1
-#		print('Iteration ', itcount, '\t X = ',X ,'\t W = ', W, '\t Norm = %0.2E' % norm)
+		#print('Iteration ', itcount, '\t X = ',X ,'\t W = ', W, '\t Norm = %0.2E' % norm)
 
 		if min(X)<T[0]:
 			print('SINGULAR MATRIX!')
@@ -131,7 +131,7 @@ def Spline_Quadrature(T, p):
 
 '''
 time1 = time.time()
-for _ in range(100):
+for _ in range(1):
 	Spline_Quadrature(t1, 2)
 	Spline_Quadrature(t2, 2)
 	Spline_Quadrature(t3, 3)
