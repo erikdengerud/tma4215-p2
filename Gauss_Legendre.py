@@ -22,9 +22,9 @@ def Gauss_Legendre_Data(n):
     # find the n roots of L_{n}(x). Since the roots are symmetric about x = 0,
     # we only need to calculate the first ceil(n / 2) roots in [0, 1]
     guess = [ ( np.cos((2 * i - 1) * np.pi / (2 * n + 1)) + np.cos(2 * i * np.pi / (2 * n + 1)) ) / 2 for i in range(1, int(np.floor(n / 2)) + 1) ]
-    if n % 2 != 0:
-        guess.append(0)
     xi = [ Olver(n, x_0) for x_0 in guess ]
+    if n % 2 != 0:
+        xi.append(0)
     # add the roots on [-1, 0)
     for i in range( int(np.floor(n / 2)) - 1, -1, -1 ):
         xi.append(-xi[i]);
@@ -101,10 +101,3 @@ def Return_Quadrature(xmlfile, n):
     analytic = data[1]
     
     return [numeric, analytic]
-
-#f = lambda x : 7 * x**12 + 2 * x**3 - 12 * x
-#n = 7
-#G = Gauss_Legendre_Data(n)
-#print( Gauss_Legendre_Quadrature(n, G, f) )
-
-    
