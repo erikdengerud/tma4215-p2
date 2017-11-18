@@ -16,7 +16,6 @@ def Area_Plot():
         N = 25
         u = np.linspace(surface.start('u'), surface.end('u'), N)
         v = np.linspace(surface.start('v'), surface.end('v'), N)
-        x = surface(u, v)
         x = surface(u,v)
         plt.plot(x[:,:,0],   x[:,:,1],   'k-')
         plt.plot(x[:,:,0].T, x[:,:,1].T, 'k-')
