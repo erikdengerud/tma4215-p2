@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<DATA>
+  <Function>x**3*sin(2*x)*exp(-x)</Function>
+  <Analytical>(472*sin(2)-346*cos(2)+exp(2)*(62*sin(2)-34*cos(2)))/(625*exp(1))</Analytical>
+</DATA>
