@@ -15,7 +15,7 @@ def Repeated_Quadrature(ASCFILE,XMLFILE,n1,n2):
         n = [i for i in range(n1,n2+1)]
         for i in range(n1,n2+1):
             [numeric, analytic] = Leg.Return_Quadrature('XMLfiles/' + XMLFILE,i)
-            error[i-n1] = abs(numeric-analytic)/analytic
+            error[i-n1] = abs((numeric-analytic)/analytic)
             errorFile.write(str(error[i-n1])+"\t"+str(i)+"\n")
         print("File successfully written.")
     
