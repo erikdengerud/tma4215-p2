@@ -13,15 +13,13 @@ def Area_Plot():
         surface = file.read()[0]
 
         #2D        
-        N = 30
+        N = 25
         u = np.linspace(surface.start('u'), surface.end('u'), N)
         v = np.linspace(surface.start('v'), surface.end('v'), N)
-        X = surface(u, v)
-        #Why did we have to find the syntax for this ourselves???????? Jesus Freaking Kennedy
-        #Source:
-        #https://github.com/sintefmath/Splipy/blob/d2b6dea5055e5c8435b729969aceb0bf170024b2/doc/Tutorial/Factory%20methods.ipynb
-        plt.plot(X[:,:,0], X[:,:,1], '-', color="red")
-        plt.plot(X[:,:,0], X[:,:,1].T, '-', color="blue")
+        x = surface(u, v)
+        x = surface(u,v)
+        plt.plot(x[:,:,0],   x[:,:,1],   'k-')
+        plt.plot(x[:,:,0].T, x[:,:,1].T, 'k-')
         plt.axis('equal')
         plt.show()
 
