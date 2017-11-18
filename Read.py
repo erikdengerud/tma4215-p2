@@ -27,8 +27,8 @@ W, X, ehh = Spline_Quadrature(tau, p)
 
 summen = 0
 
-for i in X:
-    derivert = curve[0].derivative(i)
+for i in np.arange(len(X)):
+    derivert = W[i]*curve[0].derivative(X[i])
     summen += np.sqrt(np.dot(derivert, derivert))
     
 print('Vei-integral = ',summen)

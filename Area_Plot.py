@@ -1,7 +1,7 @@
 ################################################################################
 import numpy as np
 import splipy as spl
-from splipy.io import *
+from splipy.io import G2
 import splipy.surface_factory as spf
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
@@ -9,25 +9,18 @@ from mpl_toolkits.mplot3d import Axes3D
 
 
 def Area_Plot():
+    with G2("Area.g2") as file:
+        surface = file.read()[0]
 
-	with G2('Area.g2') as my_surf:
-		my_obj = my_surf.read()
+        #2D        
+        N = 25
+        u = np.linspace(surface.start('u'), surface.end('u'), N)
+        v = np.linspace(surface.start('v'), surface.end('v'), N)
+        x = surface(u,v)
+        plt.plot(x[:,:,0],   x[:,:,1],   'k-')
+        plt.plot(x[:,:,0].T, x[:,:,1].T, 'k-')
+        plt.axis('equal')
+        plt.show()
 
-	
-	x = []
-	y = []
-	z = []
-	for vec in my_obj[0]:
-		x.append(vec[0])
-		y.append(vec[0])
-		z.append(0)
-
-	fig = plt.figure()
-	ax = fig.add_subplot(111, projection='3d')
-	ax.plot_surface(x,y,z)
-	plt.show()
-	plt.figure()
-	plt.plot(y,x)
-	plt.show()
 
 Area_Plot()
