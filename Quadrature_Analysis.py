@@ -10,17 +10,17 @@ import Gauss_Legendre as Leg
 
 
 def Repeated_Quadrature(ASCFILE,XMLFILE,n1,n2):
-    with open('ErrorPlots/'+ASCFILE,'w') as errorFile:
+    with open('ASCfiles/'+ASCFILE,'w') as errorFile:
         error = [0]*(abs(n2-n1)+1)
         n = [i for i in range(n1,n2+1)]
         for i in range(n1,n2+1):
-            [numeric, analytic] = Leg.Return_Quadrature('XMLfiles/'+XMLFILE,i)
+            [numeric, analytic] = Leg.Return_Quadrature('XMLfiles/' + XMLFILE,i)
             error[i-n1] = abs(numeric-analytic)/analytic
             errorFile.write(str(error[i-n1])+"\t"+str(i)+"\n")
         print("File successfully written.")
     
 def Convergence_Graph(ASCFILE,n1,n2):
-    with open('ErrorPlots/'+ASCFILE,'r') as plotFile:
+    with open('ASCfiles/'+ASCFILE,'r') as plotFile:
         error = [0]*abs(n2-n1)
         n = [0]*abs(n2-n1)     
         for i in range(0,abs(n2-n1)):

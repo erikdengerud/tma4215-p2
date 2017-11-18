@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <DATA>
-  <Function>x**6-5*x**4+7*x**2+1</Function>
-  <Analytical>104/21</Analytical>
+  <Function>x**12-3*x**8+6*x**6+8*x**2-3</Function>
+  <Analytical>146/273</Analytical>
 </DATA>
