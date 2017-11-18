@@ -10,17 +10,17 @@ import Gauss_Legendre as Leg
 
 
 def Repeated_Quadrature(ASCFILE,XMLFILE,n1,n2):
-    with open(ASCFILE,'w') as errorFile:
+    with open('ErrorPlots/'+ASCFILE,'w') as errorFile:
         error = [0]*(abs(n2-n1)+1)
         n = [i for i in range(n1,n2+1)]
         for i in range(n1,n2+1):
-            [numeric, analytic] = Leg.Return_Quadrature(XMLFILE,i)
+            [numeric, analytic] = Leg.Return_Quadrature('XMLfiles/'+XMLFILE,i)
             error[i-n1] = abs(numeric-analytic)/analytic
             errorFile.write(str(error[i-n1])+"\t"+str(i)+"\n")
         print("File successfully written.")
     
 def Convergence_Graph(ASCFILE,n1,n2):
-    with open(ASCFILE,'r') as plotFile:
+    with open('ErrorPlots/'+ASCFILE,'r') as plotFile:
         error = [0]*abs(n2-n1)
         n = [0]*abs(n2-n1)     
         for i in range(0,abs(n2-n1)):
@@ -28,10 +28,18 @@ def Convergence_Graph(ASCFILE,n1,n2):
             error[i]    = float(temp[0])
             n[i]        = int(temp[1])
         print("File successfully read. Close plot window to exit.")
+        
     plt.plot(n,error)
     plt.xlabel(r'# of integration nodes $n$')
     plt.ylabel(r'Absolute error $e(n)$')
+    plt.xticks(np.arange(n1, n2, 1.0))
+    pngName = ASCFILE.split('.')
+    pngName = pngName[0]+"Figure.png"
+    plt.savefig('ErrorPlots/'+pngName)
+    
     plt.show()
+    
+   
     
 def main():
     os.chdir(sys.path[0])
