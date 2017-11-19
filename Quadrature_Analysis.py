@@ -28,11 +28,11 @@ def Convergence_Graph(ASCFILE,n1,n2):
             temp = plotFile.readline().split()
             error[i]    = float(temp[0])
             n[i]        = int(temp[1])
-        print("File successfully read. Close plot window to exit.")
+        print("File successfully read.")
         
     plt.plot(n,error)
     plt.xlabel(r'# of integration nodes $n$')
-    plt.ylabel(r'Absolute error $e(n)$')
+    plt.ylabel(r'Relative error $e(n)$')
     plt.xticks(np.arange(n1, n2+1, 1.0))
     pngName = ASCFILE.split('.')
     pngName = pngName[0]+"Figure.png"
