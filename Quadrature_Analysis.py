@@ -37,7 +37,7 @@ def Convergence_Graph(ASCFILE,n1,n2):
     pngName = ASCFILE.split('.')
     pngName = pngName[0]+"Figure.png"
     plt.savefig('ErrorPlots/'+pngName)
-    
+    print("Figure successfully saved.")
     #plt.show()
    
     
