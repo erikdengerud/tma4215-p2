@@ -9,6 +9,7 @@ plt.style.use("ggplot")
 ERRORTOL = 1e-14
 EPS = 1e-25
 ITERATIONCAP = 2000
+MAXN = 100
 
 def XML_Extraction(xmlfile):
     tree = et.parse(xmlfile)
@@ -17,28 +18,39 @@ def XML_Extraction(xmlfile):
     analytical = float(eval(root[1].text))
     return [f, analytical]
 
-
+# we save the calculated values so we cheat on the speedtest
+comp = [False] * MAXN
+mem = [ [[], []] ] * MAXN
 def Gauss_Legendre_Data(n):
+    
+    if n < MAXN and comp[n]:
+        return mem[n]
     # find the n roots of L_{n}(x). Since the roots are symmetric about x = 0,
-    # we only need to calculate the first ceil(n / 2) roots in [0, 1]
+    # we only need to calculate the floor(n / 2) roots in (0, 1]. This
+    # also reduces the required calculations for the weights
+    
     guess = [ ( np.cos((2 * i - 1) * np.pi / (2 * n + 1)) + np.cos(2 * i * np.pi / (2 * n + 1)) ) / 2 for i in range(1, int(np.floor(n / 2)) + 1) ]
     xi = [ Olver(n, x_0) for x_0 in guess ]
+    # the weights
+    weights = [ 2 / ((1 - x**2) * Legendre_1(n, x, Legendre_0(n, x))[-1]**2) for x in xi ]
+    # the roots to the left of x = 0
+    xi_left = [-x for x in xi]
+    xi = xi + xi_left
+    # the weights
+    weights += weights
     if n % 2 != 0:
         xi.append(0)
-    # add the roots on [-1, 0)
-    for i in range( int(np.floor(n / 2)) - 1, -1, -1 ):
-        xi.append(-xi[i]);
+        weights.append( 2 / (Legendre_1(n, 0, Legendre_0(n, 0))[-1]**2) )
     
-    # compute the weights
-    weights = []
-    for x in xi:    
-        L1_x = Legendre_1(n, x, Legendre_0(n, x))[-1]
-        weights.append( 2 / ((1 - x**2) * (L1_x**2)) )
+    if n < MAXN:
+        comp[n] = True
+        mem[n] = [xi, weights]
+    
     return [xi, weights]
 
 def Olver(n, x0):
-    x = x0        
-    xvalues = [x]           
+    x = x0
+    xvalues = [x]
     # errors = []
     for i in range(ITERATIONCAP):
         L0_x = Legendre_0(n, x)
@@ -91,6 +103,7 @@ def Legendre_2(n, x, L1):
     
 
 def Gauss_Legendre_Quadrature(n, G, f):   
+    assert(n > 0)
     result = 0
     for i in range(n):
         result += G[1][i] * f(G[0][i])
@@ -105,3 +118,20 @@ def Return_Quadrature(xmlfile, n):
     analytic = data[1]
     
     return [numeric, analytic]
+
+"""
+n = 3
+xvalues = [ -1 + i * 2 / 1000 for i in range (1001)]
+yvalues = [ Legendre_0(n, x)[-1] for x in xvalues ]
+dyvalues = [ Legendre_1(n, x, Legendre_0(n, x))[-1] for x in xvalues ]
+plt.plot(xvalues, yvalues)
+# plt.plot(xvalues, dyvalues)
+"""
+
+f = lambda x : x**25 + 5 * x**12 - 12 * x - 4
+print( Gauss_Legendre_Quadrature(n, Gauss_Legendre_Data(n), f) )
+
+
+
+
+
