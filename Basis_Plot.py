@@ -5,7 +5,6 @@ import matplotlib.pyplot as plt
 import sys
 ################################################################################
 
-
 def Basis_Plot():
 	'''Plots basis splines for different knot vectors'''
 	x = np.linspace(0, 4, 100)

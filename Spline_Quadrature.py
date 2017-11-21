@@ -4,7 +4,6 @@ import scipy as sp
 import splipy as spl
 import sys
 ################################################################################
-import time
 
 def Prepare_Data(T,p):
 	'''Prepare_Data, for creating the initial condition and augmenting the knot
@@ -45,7 +44,7 @@ def Assembly(basis,I,W,X,n):
 	F = np.zeros(n)
 	F[:] = np.dot(N, W) - I
 	
-	#Permuting of J:
+	#Permutation of J:
 	i_0  = list(range(0, n, 2))
 	i_1  = list(range(1, n, 2))
 	#updating
