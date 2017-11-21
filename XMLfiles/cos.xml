@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <DATA>
   <Function>x**4*cos(8*x)+x**2*cos(4*x)</Function>
-  <Analytical>-0.308581773528552</Analytical>
+  <Analytical>7*sin(4)/16+cos(4)/4+419*sin(8)/2048+29*cos(8)/256</Analytical>
 </DATA>

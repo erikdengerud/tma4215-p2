@@ -30,7 +30,7 @@ def Convergence_Graph(ASCFILE,n1,n2):
             n[i]        = int(temp[1])
         print("File successfully read.")
         
-    plt.plot(n,error)
+    plt.semilogy(n,error)
     plt.xlabel(r'# of integration nodes $n$')
     plt.ylabel(r'Relative error $e(n)$')
     plt.xticks(np.arange(n1, n2+1, 1.0))
