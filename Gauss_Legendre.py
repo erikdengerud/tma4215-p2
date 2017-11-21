@@ -6,7 +6,7 @@ from math import *
 import matplotlib.pyplot as plt
 plt.style.use("ggplot")
 ################################################################################
-ERRORTOL = 1e-14
+ERRORTOL = 1e-15
 EPS = 1e-25
 ITERATIONCAP = 2000
 MAXN = 100
@@ -18,7 +18,7 @@ def XML_Extraction(xmlfile):
     analytical = float(eval(root[1].text))
     return [f, analytical]
 
-# we save the calculated values so we cheat on the speedtest
+
 comp = [False] * MAXN
 mem = [ [[], []] ] * MAXN
 def Gauss_Legendre_Data(n):
@@ -50,8 +50,7 @@ def Gauss_Legendre_Data(n):
 
 def Olver(n, x0):
     x = x0
-    xvalues = [x]
-    # errors = []
+    xprev = x
     for i in range(ITERATIONCAP):
         L0_x = Legendre_0(n, x)
         L1_x = Legendre_1(n, x, L0_x)
@@ -59,11 +58,11 @@ def Olver(n, x0):
         
         assert(np.abs(L1_x[-1]) > EPS)
         x = x - L0_x[-1] / L1_x[-1] - L2_x[-1] * L0_x[-1]**2 / (2 * L1_x[-1]**3)
-        current_error = np.abs(xvalues[-1] - x)
-        # errors.append(current_error)
-        xvalues.append(x)
+        current_error = np.abs(xprev - x)
+        xprev = x
+        
         if (current_error < ERRORTOL):
-            return x #, errors
+            return x
     assert(False)
 
 def Legendre_0(n, x):
@@ -83,7 +82,7 @@ def Legendre_1(n, x, L0):
     if n == 0:
         return [0]
     if x == -1:
-        return [-i * (-1)**n / (i + 1) for i in range (n + 1)]
+        return [-i * (-1)**i * (i + 1) / 2 for i in range (n + 1)]
     if x == 1:
         return [i * (i + 1) / 2 for i in range (n + 1)]
     # result = [ L_0'(x), L_1'(x), ..., L_n'(x) ]
@@ -119,17 +118,6 @@ def Return_Quadrature(xmlfile, n):
     
     return [numeric, analytic]
 
-"""
-n = 3
-xvalues = [ -1 + i * 2 / 1000 for i in range (1001)]
-yvalues = [ Legendre_0(n, x)[-1] for x in xvalues ]
-dyvalues = [ Legendre_1(n, x, Legendre_0(n, x))[-1] for x in xvalues ]
-plt.plot(xvalues, yvalues)
-# plt.plot(xvalues, dyvalues)
-"""
-
-f = lambda x : x**25 + 5 * x**12 - 12 * x - 4
-print( Gauss_Legendre_Quadrature(n, Gauss_Legendre_Data(n), f) )
 
 
 
