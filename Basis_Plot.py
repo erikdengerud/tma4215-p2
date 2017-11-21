@@ -2,9 +2,7 @@
 import numpy as np
 import splipy as spl
 import matplotlib.pyplot as plt
-import sys
 ################################################################################
-
 
 def Basis_Plot():
 	'''Plots basis splines for different knot vectors'''

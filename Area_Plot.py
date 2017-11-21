@@ -6,7 +6,7 @@ import splipy.surface_factory as spf
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 ################################################################################
-
+plt.style.use('ggplot')
 
 def Area_Plot():
     with G2("Area.g2") as file:
@@ -20,6 +20,7 @@ def Area_Plot():
         plt.plot(x[:,:,0],   x[:,:,1],   'k-')
         plt.plot(x[:,:,0].T, x[:,:,1].T, 'k-')
         plt.axis('equal')
+        plt.savefig('Area_Plot.pdf')
         plt.show()
 
 

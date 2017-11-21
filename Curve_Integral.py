@@ -1,34 +1,27 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Sat Nov 18 13:01:30 2017
-
-@author: William
-"""
-
 ################################################################################
 import numpy as np
-import splipy as spl
-from splipy.io import *
-import matplotlib.pyplot as plt
-import sys
-from Spline_Quadrature import Spline_Quadrature, Assembly, Prepare_Data
+from splipy.io import G2
+import Spline_Quadrature as SQ
 ################################################################################
-import splipy.curve_factory as curves
 
+def Curve_Integral():
+	#Reading in the file
+	with G2('Curve.g2') as my_file:
+	    curve = my_file.read()[0]
+	
+	#Gettin weights and nodes from Spline_Quadrature    
+	tau = curve.knots(0,True)
+	p = curve.order(0) - 1
+	W, X, iterations = SQ.Spline_Quadrature(tau, p)
 
+	#Sum over all ds to get the integral
+	integral = 0
+	for i, x in enumerate(X):
+		derivative = curve.derivative(x)
+		integral += W[i]*np.linalg.norm(derivative)
 
-with G2('Curve.g2') as my_file:
-    curve = my_file.read() #returns a splinObject
-    
-tau = curve[0].knots(0,True)
-p = curve[0].order(0) - 1
+	print('Curve_Integral = ', integral)
 
-W, X, ehh = Spline_Quadrature(tau, p)
+	return integral
 
-summen = 0
-
-for i in np.arange(len(X)):
-    derivert = W[i]*curve[0].derivative(X[i])
-    summen += np.sqrt(np.dot(derivert, derivert))
-    
-print('Vei-integral = ',summen)
+Curve_Integral()

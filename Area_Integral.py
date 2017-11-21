@@ -45,4 +45,3 @@ for i in np.arange(len(X_u)):
         summen += np.abs(W_u[i]*W_v[j]*np.cross(du,dv))
         
 print('Area calculated from spline quadrature and Jacoabian integral/sum : ',summen)
-print(summen/surface.area())
