@@ -70,6 +70,10 @@ def Legendre_0(n, x):
 def Legendre_1(n, x, L0):
     if n == 0:
         return [0]
+    if x == -1:
+        return [-i * (-1)**n / (i + 1) for i in range (n + 1)]
+    if x == 1:
+        return [i * (i + 1) / 2 for i in range (n + 1)]
     # result = [ L_0'(x), L_1'(x), ..., L_n'(x) ]
     result = [0, 1]
     for i in range (2, n + 1):
