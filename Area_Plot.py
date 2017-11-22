@@ -27,7 +27,7 @@ def Area_Plot():
         plt.axis('equal')
         plt.xlabel('x')
         plt.ylabel('y')
-        plt.title('Plot of the Area given in Area.g2')
+        plt.title('Area.g2')
         plt.savefig('Area_Plot.pdf')
         plt.show()
 
