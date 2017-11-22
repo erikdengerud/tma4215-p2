@@ -10,35 +10,34 @@ import numpy as np
 import splipy as spl
 from splipy.io import G2
 import splipy.surface_factory as spf
-from Spline_Quadrature import Spline_Quadrature, Assembly, Prepare_Data
-import time
+from Spline_Quadrature import Spline_Quadrature
 ################################################################################
 def Area_Integral():
+    # Read Area.g2 file into variable surface
     with G2("Area.g2") as file:
         surface = file.read()[0]
-    #2D
-    N = 25
-    u = np.linspace(surface.start('u'), surface.end('u'), N)
-    v = np.linspace(surface.start('v'), surface.end('v'), N)
-    x = surface(u, v)
     
+    # Fetch knot vectors in first and second direction
     tau_u, tau_v = surface.knots(0,True), surface.knots(1,True)
     
+    # Fetch order of the spline for both directions
     p_u, p_v = surface.order()
     
+    # Correction to the order
     p_u += -1
     p_v += -1
     
-    W_u, X_u, ehh = Spline_Quadrature(tau_u,p_u)
-    W_v, X_v, ehh = Spline_Quadrature(tau_v,p_v)
+    # Calculate optimal nodes and weights from Spline_Quadrature
+    W_u, X_u, dummy = Spline_Quadrature(tau_u,p_u)
+    W_v, X_v, dummy = Spline_Quadrature(tau_v,p_v)
     
-    #du = surface.derivative(X_u, X_v, d=(1,0))
-    #dv = surface.derivative(X_u, X_v, d=(0,1))
-    
+    # To check if the value is correct
     print('Area calculated by splipy : ',surface.area())
     
+    # Define empty variable to add each area component to
     summen = 0
     
+    # Main loop, calculates the Jacobian in each node of the surface, multiplies it by its respective weights and adds it to summen
     for i in np.arange(len(X_u)):
         for j in np.arange(len(X_v)):
             du = surface.derivative(X_u[i], X_v[j], d=(1,0))
