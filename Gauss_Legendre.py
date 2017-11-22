@@ -3,13 +3,10 @@ import xml.etree.ElementTree as et
 import sys
 import numpy as np
 from math import *
-import matplotlib.pyplot as plt
-plt.style.use("ggplot")
 ################################################################################
 ERRORTOL = 1e-15
 EPS = 1e-25
 ITERATIONCAP = 2000
-MAXN = 100
 
 def XML_Extraction(xmlfile):
     tree = et.parse(xmlfile)
@@ -18,13 +15,8 @@ def XML_Extraction(xmlfile):
     analytical = float(eval(root[1].text))
     return [f, analytical]
 
-
-comp = [False] * MAXN
-mem = [ [[], []] ] * MAXN
 def Gauss_Legendre_Data(n):
     
-    if n < MAXN and comp[n]:
-        return mem[n]
     # find the n roots of L_{n}(x). Since the roots are symmetric about x = 0,
     # we only need to calculate the floor(n / 2) roots in (0, 1]. This
     # also reduces the required calculations for the weights
@@ -41,10 +33,6 @@ def Gauss_Legendre_Data(n):
     if n % 2 != 0:
         xi.append(0)
         weights.append( 2 / (Legendre_1(n, 0, Legendre_0(n, 0))[-1]**2) )
-    
-    if n < MAXN:
-        comp[n] = True
-        mem[n] = [xi, weights]
     
     return [xi, weights]
 

@@ -5,6 +5,7 @@ import numpy as np
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import Gauss_Legendre as Leg
+plt.style.use("ggplot")
 ################################################################################
 
 
