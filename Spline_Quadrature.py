@@ -29,7 +29,7 @@ def Prepare_Data(T,p):
 	#Creating the initial conditions.
 	G = np.array(basis.greville()) 		#greville
 	X = np.array(G[1::2]+G[::2])/2 		#nodes
-	W = I[1::2]+I[::2]				 	#weights
+	W = I[1::2]+I[::2]			#weights
 	
 	return basis, I, W, X, n
 
@@ -38,7 +38,7 @@ def Assembly(basis,I,W,X,n):
 	'''updating Fn and ∂Fn every time in the Newton iteration.'''
 
 	N = basis.evaluate(X).T
-	dN = basis.evaluate(X, d=1).T#sparse=true
+	dN = basis.evaluate(X, d=1).T
 
 	#update Fn
 	F = np.zeros(n)
