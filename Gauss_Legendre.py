@@ -54,7 +54,6 @@ def Olver(n, x0):
         x += delta_x
         
         if (np.abs(delta_x) < ERRORTOL):
-            print(i + 1)
             return x
             
     assert(False)
@@ -117,7 +116,6 @@ def Return_Quadrature(xmlfile, n):
     guess = [ ( np.cos((2 * j - 1) * np.pi / (2 * i + 1)) + np.cos(2 * j * np.pi / (2 * i + 1)) ) / 2 for j in range(1, int(np.floor(i / 2)) + 1) ]
     for x in guess:
         xi = Olver(i, x)
-        print(Legendre_0(i, xi)[-1])
         assert(Legendre_0(i, xi)[-1] < ERRORTOL)"""
 
 
